@@ -12830,6 +12830,11 @@ paths:
       tags:
         - Query
 definitions:
+  alice.checkers.checkers.MsgCreateGameResponse:
+    type: object
+    properties:
+      idValue:
+        type: string
   alice.checkers.checkers.MsgCreatePostResponse:
     type: object
   alice.checkers.checkers.NextGame:
