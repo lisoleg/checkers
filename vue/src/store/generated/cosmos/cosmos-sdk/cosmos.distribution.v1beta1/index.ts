@@ -112,10 +112,10 @@ export default {
 			state[query][JSON.stringify(key)] = value
 		},
 		SUBSCRIBE(state, subscription) {
-			state._Subscriptions.add(subscription)
+			state._Subscriptions.add(JSON.stringify(subscription))
 		},
 		UNSUBSCRIBE(state, subscription) {
-			state._Subscriptions.delete(subscription)
+			state._Subscriptions.delete(JSON.stringify(subscription))
 		}
 	},
 	getters: {
@@ -199,7 +199,8 @@ export default {
 		async StoreUpdate({ state, dispatch }) {
 			state._Subscriptions.forEach(async (subscription) => {
 				try {
-					await dispatch(subscription.action, subscription.payload)
+					const sub=JSON.parse(subscription)
+					await dispatch(sub.action, sub.payload)
 				}catch(e) {
 					throw new SpVuexError('Subscriptions: ' + e.message)
 				}
@@ -211,8 +212,9 @@ export default {
 		 		
 		
 		
-		async QueryParams({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
+		async QueryParams({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
+				const key = params ?? {};
 				const queryClient=await initQueryClient(rootGetters)
 				let value= (await queryClient.queryParams()).data
 				
@@ -232,8 +234,9 @@ export default {
 		 		
 		
 		
-		async QueryValidatorOutstandingRewards({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
+		async QueryValidatorOutstandingRewards({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
+				const key = params ?? {};
 				const queryClient=await initQueryClient(rootGetters)
 				let value= (await queryClient.queryValidatorOutstandingRewards( key.validator_address)).data
 				
@@ -253,8 +256,9 @@ export default {
 		 		
 		
 		
-		async QueryValidatorCommission({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
+		async QueryValidatorCommission({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
+				const key = params ?? {};
 				const queryClient=await initQueryClient(rootGetters)
 				let value= (await queryClient.queryValidatorCommission( key.validator_address)).data
 				
@@ -274,14 +278,15 @@ export default {
 		 		
 		
 		
-		async QueryValidatorSlashes({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
+		async QueryValidatorSlashes({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
+				const key = params ?? {};
 				const queryClient=await initQueryClient(rootGetters)
 				let value= (await queryClient.queryValidatorSlashes( key.validator_address, query)).data
 				
 					
-				while (all && (<any> value).pagination && (<any> value).pagination.nextKey!=null) {
-					let next_values=(await queryClient.queryValidatorSlashes( key.validator_address, {...query, 'pagination.key':(<any> value).pagination.nextKey})).data
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.queryValidatorSlashes( key.validator_address, {...query, 'pagination.key':(<any> value).pagination.next_key})).data
 					value = mergeResults(value, next_values);
 				}
 				commit('QUERY', { query: 'ValidatorSlashes', key: { params: {...key}, query}, value })
@@ -299,8 +304,9 @@ export default {
 		 		
 		
 		
-		async QueryDelegationRewards({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
+		async QueryDelegationRewards({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
+				const key = params ?? {};
 				const queryClient=await initQueryClient(rootGetters)
 				let value= (await queryClient.queryDelegationRewards( key.delegator_address,  key.validator_address)).data
 				
@@ -320,8 +326,9 @@ export default {
 		 		
 		
 		
-		async QueryDelegationTotalRewards({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
+		async QueryDelegationTotalRewards({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
+				const key = params ?? {};
 				const queryClient=await initQueryClient(rootGetters)
 				let value= (await queryClient.queryDelegationTotalRewards( key.delegator_address)).data
 				
@@ -341,8 +348,9 @@ export default {
 		 		
 		
 		
-		async QueryDelegatorValidators({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
+		async QueryDelegatorValidators({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
+				const key = params ?? {};
 				const queryClient=await initQueryClient(rootGetters)
 				let value= (await queryClient.queryDelegatorValidators( key.delegator_address)).data
 				
@@ -362,8 +370,9 @@ export default {
 		 		
 		
 		
-		async QueryDelegatorWithdrawAddress({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
+		async QueryDelegatorWithdrawAddress({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
+				const key = params ?? {};
 				const queryClient=await initQueryClient(rootGetters)
 				let value= (await queryClient.queryDelegatorWithdrawAddress( key.delegator_address)).data
 				
@@ -383,8 +392,9 @@ export default {
 		 		
 		
 		
-		async QueryCommunityPool({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
+		async QueryCommunityPool({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
+				const key = params ?? {};
 				const queryClient=await initQueryClient(rootGetters)
 				let value= (await queryClient.queryCommunityPool()).data
 				
@@ -399,21 +409,6 @@ export default {
 		},
 		
 		
-		async sendMsgSetWithdrawAddress({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgSetWithdrawAddress(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgSetWithdrawAddress:Init', 'Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new SpVuexError('TxClient:MsgSetWithdrawAddress:Send', 'Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendMsgWithdrawValidatorCommission({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -429,18 +424,18 @@ export default {
 				}
 			}
 		},
-		async sendMsgFundCommunityPool({ rootGetters }, { value, fee = [], memo = '' }) {
+		async sendMsgSetWithdrawAddress({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgFundCommunityPool(value)
+				const msg = await txClient.msgSetWithdrawAddress(value)
 				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
 	gas: "200000" }, memo})
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgFundCommunityPool:Init', 'Could not initialize signing client. Wallet is required.')
+					throw new SpVuexError('TxClient:MsgSetWithdrawAddress:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new SpVuexError('TxClient:MsgFundCommunityPool:Send', 'Could not broadcast Tx: '+ e.message)
+					throw new SpVuexError('TxClient:MsgSetWithdrawAddress:Send', 'Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -459,21 +454,22 @@ export default {
 				}
 			}
 		},
-		
-		async MsgSetWithdrawAddress({ rootGetters }, { value }) {
+		async sendMsgFundCommunityPool({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgSetWithdrawAddress(value)
-				return msg
+				const msg = await txClient.msgFundCommunityPool(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgSetWithdrawAddress:Init', 'Could not initialize signing client. Wallet is required.')
+					throw new SpVuexError('TxClient:MsgFundCommunityPool:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new SpVuexError('TxClient:MsgSetWithdrawAddress:Create', 'Could not create message: ' + e.message)
-					
+					throw new SpVuexError('TxClient:MsgFundCommunityPool:Send', 'Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
+		
 		async MsgWithdrawValidatorCommission({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -488,16 +484,16 @@ export default {
 				}
 			}
 		},
-		async MsgFundCommunityPool({ rootGetters }, { value }) {
+		async MsgSetWithdrawAddress({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgFundCommunityPool(value)
+				const msg = await txClient.msgSetWithdrawAddress(value)
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new SpVuexError('TxClient:MsgFundCommunityPool:Init', 'Could not initialize signing client. Wallet is required.')
+					throw new SpVuexError('TxClient:MsgSetWithdrawAddress:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new SpVuexError('TxClient:MsgFundCommunityPool:Create', 'Could not create message: ' + e.message)
+					throw new SpVuexError('TxClient:MsgSetWithdrawAddress:Create', 'Could not create message: ' + e.message)
 					
 				}
 			}
@@ -512,6 +508,20 @@ export default {
 					throw new SpVuexError('TxClient:MsgWithdrawDelegatorReward:Init', 'Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new SpVuexError('TxClient:MsgWithdrawDelegatorReward:Create', 'Could not create message: ' + e.message)
+					
+				}
+			}
+		},
+		async MsgFundCommunityPool({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgFundCommunityPool(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new SpVuexError('TxClient:MsgFundCommunityPool:Init', 'Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new SpVuexError('TxClient:MsgFundCommunityPool:Create', 'Could not create message: ' + e.message)
 					
 				}
 			}
