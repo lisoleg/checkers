@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"strconv"
 	"strings"
 
 	"github.com/alice/checkers/x/checkers/rules"
@@ -53,6 +54,18 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	storedGame.Game = game.String()
 	storedGame.Turn = game.Turn.Color
 	k.Keeper.SetStoredGame(ctx, storedGame)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, "checkers"),
+			sdk.NewAttribute(sdk.AttributeKeyAction, types.PlayMoveEventKey),
+			sdk.NewAttribute(types.PlayMoveEventCreator, msg.Creator),
+			sdk.NewAttribute(types.PlayMoveEventIdValue, msg.IdValue),
+			sdk.NewAttribute(types.PlayMoveEventCapturedX, strconv.FormatInt(int64(captured.X), 10)),
+			sdk.NewAttribute(types.PlayMoveEventCapturedY, strconv.FormatInt(int64(captured.Y), 10)),
+			sdk.NewAttribute(types.PlayMoveEventWinner, game.Winner().Color),
+		),
+	)
 
 	return &types.MsgPlayMoveResponse{
     IdValue:   msg.IdValue,
