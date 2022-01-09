@@ -8,7 +8,6 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgCreatePost{}, "checkers/CreatePost", nil)
 	cdc.RegisterConcrete(&MsgCreateGame{}, "checkers/CreateGame", nil)
 	cdc.RegisterConcrete(&MsgPlayMove{}, "checkers/PlayMove", nil)
 	cdc.RegisterConcrete(&MsgRejectGame{}, "checkers/RejectGame", nil)
@@ -16,9 +15,6 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
-	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreatePost{},
-	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateGame{},
 	)

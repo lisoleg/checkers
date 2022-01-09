@@ -354,6 +354,7 @@ func New(
 		keys[checkersmoduletypes.StoreKey],
 		keys[checkersmoduletypes.MemStoreKey],
 		app.GetSubspace(checkersmoduletypes.ModuleName),
+		app.BankKeeper,
 	)
 	checkersModule := checkersmodule.NewAppModule(appCodec, app.CheckersKeeper, app.AccountKeeper, app.BankKeeper)
 

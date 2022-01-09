@@ -30,7 +30,6 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(CmdCreatePost())
 	cmd.AddCommand(CmdCreateGame())
 	cmd.AddCommand(CmdPlayMove())
 	cmd.AddCommand(CmdRejectGame())

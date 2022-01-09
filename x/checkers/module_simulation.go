@@ -24,10 +24,6 @@ var (
 )
 
 const (
-	opWeightMsgCreatePost = "op_weight_msg_create_chain"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgCreatePost int = 100
-
 	opWeightMsgCreateGame = "op_weight_msg_create_chain"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreateGame int = 100
@@ -72,17 +68,6 @@ func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
 // WeightedOperations returns the all the gov module operations with their respective weights.
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
-
-	var weightMsgCreatePost int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreatePost, &weightMsgCreatePost, nil,
-		func(_ *rand.Rand) {
-			weightMsgCreatePost = defaultWeightMsgCreatePost
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgCreatePost,
-		checkerssimulation.SimulateMsgCreatePost(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
 
 	var weightMsgCreateGame int
 	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateGame, &weightMsgCreateGame, nil,
