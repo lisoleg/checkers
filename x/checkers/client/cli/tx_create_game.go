@@ -22,6 +22,7 @@ func CmdCreateGame() *cobra.Command {
 			argBlack := args[1]
 			argWager := args[2]
 			wager, err := strconv.ParseUint(argWager, 10, 64)
+			token := args[3]
 			if err == nil {
 				return err
 			}
@@ -36,6 +37,7 @@ func CmdCreateGame() *cobra.Command {
 				argRed,
 				argBlack,
 				wager,
+				token,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

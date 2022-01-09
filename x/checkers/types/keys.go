@@ -47,6 +47,7 @@ const (
 	ForfeitGameEventWinner  = "Winner"
 
 	StoredGameEventWager = "Wager"
+	StoredGameEventToken = "Token"
 )
 
 const (
