@@ -17,7 +17,7 @@ type (
 		storeKey   sdk.StoreKey
 		memKey     sdk.StoreKey
 		paramstore paramtypes.Subspace
-		bank 			 types.BankKeeper
+		bank       types.BankKeeper
 	}
 )
 
@@ -39,7 +39,7 @@ func NewKeeper(
 		storeKey:   storeKey,
 		memKey:     memKey,
 		paramstore: ps,
-		bank: 			bank,
+		bank:       bank,
 	}
 }
 

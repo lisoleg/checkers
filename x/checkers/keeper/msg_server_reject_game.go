@@ -18,11 +18,11 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 		return nil, sdkerrors.Wrapf(types.ErrGameNotFound, "game not found %s", msg.IdValue)
 	}
 	if storedGame.Winner != rules.NO_PLAYER.Color {
-    return nil, types.ErrGameFinished
+		return nil, types.ErrGameFinished
 	}
 
 	if strings.Compare(storedGame.Red, msg.Creator) == 0 {
-    if 1 < storedGame.MoveCount { // Notice the use of the new field
+		if 1 < storedGame.MoveCount { // Notice the use of the new field
 			return nil, types.ErrRedAlreadyPlayed
 		}
 	} else if strings.Compare(storedGame.Black, msg.Creator) == 0 {
@@ -39,7 +39,7 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 	// Remove from the FIFO
 	nextGame, found := k.Keeper.GetNextGame(ctx)
 	if !found {
-			panic("NextGame not found")
+		panic("NextGame not found")
 	}
 
 	k.Keeper.RemoveFromFifo(ctx, &storedGame, &nextGame)
@@ -51,7 +51,7 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 	ctx.GasMeter().ConsumeGas(types.RejectGameGas, "Reject game")
 
 	ctx.EventManager().EmitEvent(
-    sdk.NewEvent(sdk.EventTypeMessage,
+		sdk.NewEvent(sdk.EventTypeMessage,
 			sdk.NewAttribute(sdk.AttributeKeyModule, "checkers"),
 			sdk.NewAttribute(sdk.AttributeKeyAction, types.RejectGameEventKey),
 			sdk.NewAttribute(types.RejectGameEventCreator, msg.Creator),

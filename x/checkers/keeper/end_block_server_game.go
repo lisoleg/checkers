@@ -26,7 +26,7 @@ func (k Keeper) ForfeitExpiredGames(goCtx context.Context) {
 	var storedGame types.StoredGame
 
 	for {
-    if strings.Compare(storedGameId, types.NoFifoIdKey) == 0 {
+		if strings.Compare(storedGameId, types.NoFifoIdKey) == 0 {
 			break
 		}
 

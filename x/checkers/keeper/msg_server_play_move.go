@@ -20,7 +20,7 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	}
 
 	if storedGame.Winner != rules.NO_PLAYER.Color {
-    return nil, types.ErrGameFinished
+		return nil, types.ErrGameFinished
 	}
 
 	var player rules.Player
@@ -70,9 +70,9 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	}
 
 	if storedGame.Winner == rules.NO_PLAYER.Color {
-    k.Keeper.SendToFifoTail(ctx, &storedGame, &nextGame)
+		k.Keeper.SendToFifoTail(ctx, &storedGame, &nextGame)
 	} else {
-    k.Keeper.RemoveFromFifo(ctx, &storedGame, &nextGame)
+		k.Keeper.RemoveFromFifo(ctx, &storedGame, &nextGame)
 		// Pay the winnings to the winner
 		k.Keeper.MustPayWinnings(ctx, &storedGame)
 	}

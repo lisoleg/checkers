@@ -11,7 +11,7 @@ import (
 
 func (k *Keeper) CollectWager(ctx sdk.Context, storedGame *types.StoredGame) error {
 	if storedGame.MoveCount == 0 {
-    // Black plays first
+		// Black plays first
 		black, err := storedGame.GetBlackAddress()
 		if err != nil {
 			panic(err.Error())
@@ -58,7 +58,7 @@ func (k *Keeper) MustPayWinnings(ctx sdk.Context, storedGame *types.StoredGame) 
 
 func (k *Keeper) MustRefundWager(ctx sdk.Context, storedGame *types.StoredGame) {
 	if storedGame.MoveCount == 1 {
-    // Refund
+		// Refund
 		black, err := storedGame.GetBlackAddress()
 		if err != nil {
 			panic(err.Error())

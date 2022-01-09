@@ -68,15 +68,15 @@ func GetNextDeadline(ctx sdk.Context) time.Time {
 func (storedGame *StoredGame) GetPlayerAddress(color string) (address sdk.AccAddress, found bool, err error) {
 	red, err := storedGame.GetRedAddress()
 	if err != nil {
-			return nil, false, err
+		return nil, false, err
 	}
 	black, err := storedGame.GetBlackAddress()
 	if err != nil {
-			return nil, false, err
+		return nil, false, err
 	}
 	address, found = map[string]sdk.AccAddress{
-			rules.RED_PLAYER.Color:   red,
-			rules.BLACK_PLAYER.Color: black,
+		rules.RED_PLAYER.Color:   red,
+		rules.BLACK_PLAYER.Color: black,
 	}[color]
 	return address, found, nil
 }

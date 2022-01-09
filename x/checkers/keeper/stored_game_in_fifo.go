@@ -43,7 +43,7 @@ func (k Keeper) SendToFifoTail(ctx sdk.Context, game *types.StoredGame, info *ty
 	} else if info.FifoHead == types.NoFifoIdKey || info.FifoTail == types.NoFifoIdKey {
 		panic("Fifo should have both head and tail or none")
 	} else if info.FifoTail == game.Index {
-			// Nothing to do, already at tail
+		// Nothing to do, already at tail
 	} else {
 		// Snip game out
 		k.RemoveFromFifo(ctx, game, info)
@@ -51,7 +51,7 @@ func (k Keeper) SendToFifoTail(ctx sdk.Context, game *types.StoredGame, info *ty
 		// Now add to tail
 		currentTail, found := k.GetStoredGame(ctx, info.FifoTail)
 		if !found {
-				panic("Current Fifo tail was not found")
+			panic("Current Fifo tail was not found")
 		}
 		currentTail.AfterId = game.Index
 		game.BeforeId = currentTail.Index
