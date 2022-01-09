@@ -1,5 +1,7 @@
 package types
 
+import "time"
+
 const (
 	// ModuleName defines the module name
 	ModuleName = "checkers"
@@ -41,4 +43,7 @@ const (
 	RejectGameEventIdValue = "IdValue"
 
 	NoFifoIdKey = "-1"
+
+	MaxTurnDurationInSeconds = time.Duration(24 * 3_600 * 1000_000_000) // 1 day
+	DeadlineLayout           = "2006-01-02 15:04:05.999999999 +0000 UTC"
 )

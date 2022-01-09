@@ -1,6 +1,8 @@
 package types
 
 import (
+	"time"
+
 	"github.com/alice/checkers/x/checkers/rules"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -47,4 +49,39 @@ func (storedGame StoredGame) Validate() (err error) {
 	}
 	_, err = storedGame.GetBlackAddress()
 	return err
+}
+
+func (storedGame *StoredGame) GetDeadlineAsTime() (deadline time.Time, err error) {
+	deadline, errDeadline := time.Parse(DeadlineLayout, storedGame.Deadline)
+	// sdkerrors.Wrapf returns nil if err is nil
+	return deadline, sdkerrors.Wrapf(errDeadline, ErrInvalidDeadline.Error(), storedGame.Deadline)
+}
+
+func FormatDeadline(deadline time.Time) string {
+	return deadline.UTC().Format(DeadlineLayout)
+}
+
+func GetNextDeadline(ctx sdk.Context) time.Time {
+	return ctx.BlockTime().Add(MaxTurnDurationInSeconds)
+}
+
+func (storedGame *StoredGame) GetPlayerAddress(color string) (address sdk.AccAddress, found bool, err error) {
+	red, err := storedGame.GetRedAddress()
+	if err != nil {
+			return nil, false, err
+	}
+	black, err := storedGame.GetBlackAddress()
+	if err != nil {
+			return nil, false, err
+	}
+	address, found = map[string]sdk.AccAddress{
+			rules.RED_PLAYER.Color:   red,
+			rules.BLACK_PLAYER.Color: black,
+	}[color]
+	return address, found, nil
+}
+
+func (storedGame *StoredGame) GetWinnerAddress() (address sdk.AccAddress, found bool, err error) {
+	address, found, err = storedGame.GetPlayerAddress(storedGame.Winner)
+	return address, found, err
 }
