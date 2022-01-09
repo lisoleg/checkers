@@ -22,6 +22,10 @@ paths:
                     format: uint64
                   creator:
                     type: string
+                  fifoHead:
+                    type: string
+                  fifoTail:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -104,6 +108,13 @@ paths:
                     black:
                       type: string
                     creator:
+                      type: string
+                    moveCount:
+                      type: string
+                      format: uint64
+                    beforeId:
+                      type: string
+                    afterId:
                       type: string
               pagination:
                 type: object
@@ -233,6 +244,13 @@ paths:
                   black:
                     type: string
                   creator:
+                    type: string
+                  moveCount:
+                    type: string
+                    format: uint64
+                  beforeId:
+                    type: string
+                  afterId:
                     type: string
         default:
           description: An unexpected error response.
@@ -12842,6 +12860,16 @@ definitions:
     properties:
       idValue:
         type: string
+      capturedX:
+        type: string
+        format: int64
+      capturedY:
+        type: string
+        format: int64
+      winner:
+        type: string
+  alice.checkers.checkers.MsgRejectGameResponse:
+    type: object
   alice.checkers.checkers.NextGame:
     type: object
     properties:
@@ -12849,6 +12877,10 @@ definitions:
         type: string
         format: uint64
       creator:
+        type: string
+      fifoHead:
+        type: string
+      fifoTail:
         type: string
   alice.checkers.checkers.Params:
     type: object
@@ -12872,6 +12904,13 @@ definitions:
             black:
               type: string
             creator:
+              type: string
+            moveCount:
+              type: string
+              format: uint64
+            beforeId:
+              type: string
+            afterId:
               type: string
       pagination:
         type: object
@@ -12909,6 +12948,10 @@ definitions:
             format: uint64
           creator:
             type: string
+          fifoHead:
+            type: string
+          fifoTail:
+            type: string
   alice.checkers.checkers.QueryGetStoredGameResponse:
     type: object
     properties:
@@ -12926,6 +12969,13 @@ definitions:
           black:
             type: string
           creator:
+            type: string
+          moveCount:
+            type: string
+            format: uint64
+          beforeId:
+            type: string
+          afterId:
             type: string
   alice.checkers.checkers.QueryParamsResponse:
     type: object
@@ -12948,6 +12998,13 @@ definitions:
       black:
         type: string
       creator:
+        type: string
+      moveCount:
+        type: string
+        format: uint64
+      beforeId:
+        type: string
+      afterId:
         type: string
   cosmos.base.query.v1beta1.PageRequest:
     type: object

@@ -34,18 +34,18 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	}
 
 	if !game.TurnIs(player) {
-    return nil, types.ErrNotPlayerTurn
+		return nil, types.ErrNotPlayerTurn
 	}
 
 	captured, moveErr := game.Move(
-    rules.Pos{
+		rules.Pos{
 			X: int(msg.FromX),
 			Y: int(msg.FromY),
-    },
-    rules.Pos{
+		},
+		rules.Pos{
 			X: int(msg.ToX),
 			Y: int(msg.ToY),
-    },
+		},
 	)
 	if moveErr != nil {
 		return nil, sdkerrors.Wrapf(moveErr, types.ErrWrongMove.Error())
@@ -54,6 +54,16 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	storedGame.Game = game.String()
 	storedGame.Turn = game.Turn.Color
 	k.Keeper.SetStoredGame(ctx, storedGame)
+
+	storedGame.MoveCount++
+
+	nextGame, found := k.Keeper.GetNextGame(ctx)
+	if !found {
+		panic("NextGame not found")
+	}
+	k.Keeper.SendToFifoTail(ctx, &storedGame, &nextGame)
+	storedGame.Game = game.String()
+	k.Keeper.SetNextGame(ctx, nextGame)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(sdk.EventTypeMessage,
@@ -68,9 +78,9 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	)
 
 	return &types.MsgPlayMoveResponse{
-    IdValue:   msg.IdValue,
-    CapturedX: int64(captured.X),
-    CapturedY: int64(captured.Y),
-    Winner:    game.Winner().Color,
-}, nil
+		IdValue:   msg.IdValue,
+		CapturedX: int64(captured.X),
+		CapturedY: int64(captured.Y),
+		Winner:    game.Winner().Color,
+	}, nil
 }
