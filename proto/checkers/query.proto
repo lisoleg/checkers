@@ -7,6 +7,8 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "checkers/params.proto";
 import "checkers/next_game.proto";
 import "checkers/stored_game.proto";
+import "checkers/player_info.proto";
+import "checkers/leaderboard.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/alice/checkers/x/checkers/types";
@@ -36,6 +38,20 @@ service Query {
 		option (google.api.http).get = "/alice/checkers/checkers/can_play_move/{idValue}/{player}/{fromX}/{fromY}/{toX}/{toY}";
 	}
 
+// Queries a PlayerInfo by index.
+	rpc PlayerInfo(QueryGetPlayerInfoRequest) returns (QueryGetPlayerInfoResponse) {
+		option (google.api.http).get = "/alice/checkers/checkers/player_info/{index}";
+	}
+
+	// Queries a list of PlayerInfo items.
+	rpc PlayerInfoAll(QueryAllPlayerInfoRequest) returns (QueryAllPlayerInfoResponse) {
+		option (google.api.http).get = "/alice/checkers/checkers/player_info";
+	}
+
+// Queries a Leaderboard by index.
+	rpc Leaderboard(QueryGetLeaderboardRequest) returns (QueryGetLeaderboardResponse) {
+		option (google.api.http).get = "/alice/checkers/checkers/leaderboard";
+	}
 // this line is used by starport scaffolding # 2
 }
 
@@ -85,4 +101,27 @@ message QueryCanPlayMoveResponse {
   string reason = 2;
 }
 
+message QueryGetPlayerInfoRequest {
+	  string index = 1;
+
+}
+
+message QueryGetPlayerInfoResponse {
+	PlayerInfo playerInfo = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllPlayerInfoRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllPlayerInfoResponse {
+	repeated PlayerInfo playerInfo = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetLeaderboardRequest {}
+
+message QueryGetLeaderboardResponse {
+	Leaderboard Leaderboard = 1 [(gogoproto.nullable) = false];
+}
 // this line is used by starport scaffolding # 3

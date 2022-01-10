@@ -8,6 +8,11 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
+const (
+	MaxTurnDurationInSeconds = time.Duration(24 * 3_600 * 1000_000_000) // 1 day
+	DeadlineLayout           = "2006-01-02 15:04:05.999999999 +0000 UTC"
+)
+
 func (storedGame *StoredGame) GetCreatorAddress() (creator sdk.AccAddress, err error) {
 	creator, errCreator := sdk.AccAddressFromBech32(storedGame.Creator)
 	return creator, sdkerrors.Wrapf(errCreator, ErrInvalidCreator.Error(), storedGame.Creator)

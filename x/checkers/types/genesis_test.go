@@ -25,13 +25,24 @@ func TestGenesisState_Validate(t *testing.T) {
 				NextGame: &types.NextGame{
 					IdValue: 50,
 				},
-				StoredGameList: []types.StoredGame{
+				StoredGameList: []*types.StoredGame{
 					{
 						Index: "0",
 					},
 					{
 						Index: "1",
 					},
+				},
+				PlayerInfoList: []*types.PlayerInfo{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
+				Leaderboard: &types.Leaderboard{
+					Winners: []*types.WinningPlayer{},
 				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
@@ -41,6 +52,20 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated storedGame",
 			genState: &types.GenesisState{
 				StoredGameList: []types.StoredGame{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated playerInfo",
+			genState: &types.GenesisState{
+				PlayerInfoList: []types.PlayerInfo{
 					{
 						Index: "0",
 					},

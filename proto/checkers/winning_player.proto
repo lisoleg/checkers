@@ -1,0 +1,10 @@
+syntax = "proto3";
+package alice.checkers.checkers;
+
+option go_package = "github.com/alice/checkers/x/checkers/types";
+
+message WinningPlayer {
+    string playerAddress = 1;
+    uint64 wonCount = 2;
+    string dateAdded = 3;
+}

@@ -1,0 +1,11 @@
+syntax = "proto3";
+package alice.checkers.checkers;
+
+option go_package = "github.com/alice/checkers/x/checkers/types";
+
+import "gogoproto/gogo.proto";
+import "checkers/winning_player.proto";
+
+message Leaderboard {
+  repeated WinningPlayer winners = 1;
+}

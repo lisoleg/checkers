@@ -10,6 +10,10 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
+const (
+	RejectGameGas = 0
+)
+
 func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (*types.MsgRejectGameResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -48,7 +52,7 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 	k.Keeper.RemoveStoredGame(ctx, msg.IdValue)
 	k.Keeper.SetNextGame(ctx, nextGame)
 
-	ctx.GasMeter().ConsumeGas(types.RejectGameGas, "Reject game")
+	ctx.GasMeter().ConsumeGas(RejectGameGas, "Reject game")
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(sdk.EventTypeMessage,

@@ -9,6 +9,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
+const (
+	CreateGameGas = 10
+)
+
 func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (*types.MsgCreateGameResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -42,7 +46,7 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 	nextGame.IdValue++
 	k.Keeper.SetNextGame(ctx, nextGame)
 
-	ctx.GasMeter().ConsumeGas(types.CreateGameGas, "Create game")
+	ctx.GasMeter().ConsumeGas(CreateGameGas, "Create game")
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(sdk.EventTypeMessage,
