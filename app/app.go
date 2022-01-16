@@ -90,6 +90,13 @@ import (
 
 	"github.com/alice/checkers/docs"
 
+	tokenmodule "github.com/alice/checkers/x/token"
+	tokenmodulekeeper "github.com/alice/checkers/x/token/keeper"
+	tokenmoduletypes "github.com/alice/checkers/x/token/types"
+	"github.com/irisnet/irismod/modules/coinswap"
+	coinswapkeeper "github.com/irisnet/irismod/modules/coinswap/keeper"
+	coinswaptypes "github.com/irisnet/irismod/modules/coinswap/types"
+
 	checkersmodule "github.com/alice/checkers/x/checkers"
 	checkersmodulekeeper "github.com/alice/checkers/x/checkers/keeper"
 	checkersmoduletypes "github.com/alice/checkers/x/checkers/types"
@@ -143,6 +150,8 @@ var (
 		evidence.AppModuleBasic{},
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
+		tokenmodule.AppModuleBasic{},
+		coinswap.AppModuleBasic{},
 		checkersmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
@@ -156,6 +165,8 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
+		tokenmoduletypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
+		coinswaptypes.ModuleName:       {authtypes.Minter, authtypes.Burner},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -213,6 +224,8 @@ type App struct {
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
+	TokenKeeper    tokenmodulekeeper.Keeper
+	CoinswapKeeper coinswapkeeper.Keeper
 	CheckersKeeper checkersmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
@@ -250,7 +263,7 @@ func New(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
-		checkersmoduletypes.StoreKey,
+		tokenmoduletypes.StoreKey, coinswaptypes.StoreKey, checkersmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -349,6 +362,25 @@ func New(
 		&stakingKeeper, govRouter,
 	)
 
+	app.CoinswapKeeper = coinswapkeeper.NewKeeper(
+		appCodec,
+		keys[coinswaptypes.StoreKey],
+		app.GetSubspace(coinswaptypes.ModuleName),
+		app.BankKeeper,
+		app.AccountKeeper,
+		app.ModuleAccountAddrs(),
+	)
+
+	app.TokenKeeper = tokenmodulekeeper.NewKeeper(
+		appCodec,
+		keys[tokenmoduletypes.StoreKey],
+		app.GetSubspace(tokenmoduletypes.ModuleName),
+		app.BankKeeper,
+		app.ModuleAccountAddrs(),
+		authtypes.FeeCollectorName,
+	)
+	tokenModule := tokenmodule.NewAppModule(appCodec, app.TokenKeeper, app.AccountKeeper, app.BankKeeper)
+
 	app.CheckersKeeper = *checkersmodulekeeper.NewKeeper(
 		appCodec,
 		keys[checkersmoduletypes.StoreKey],
@@ -396,6 +428,7 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
+		tokenModule,
 		checkersModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
@@ -431,6 +464,8 @@ func New(
 		genutiltypes.ModuleName,
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
+		tokenmoduletypes.ModuleName,
+		coinswaptypes.ModuleName,
 		checkersmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
@@ -454,6 +489,8 @@ func New(
 		evidence.NewAppModule(app.EvidenceKeeper),
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
+		tokenModule,
+		coinswap.NewAppModule(appCodec, app.CoinswapKeeper, app.AccountKeeper, app.BankKeeper),
 		checkersModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
@@ -642,6 +679,8 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(crisistypes.ModuleName)
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
+	paramsKeeper.Subspace(tokenmoduletypes.ModuleName)
+	paramsKeeper.Subspace(coinswaptypes.ModuleName)
 	paramsKeeper.Subspace(checkersmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 

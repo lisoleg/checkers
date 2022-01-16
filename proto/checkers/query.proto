@@ -52,6 +52,11 @@ service Query {
 	rpc Leaderboard(QueryGetLeaderboardRequest) returns (QueryGetLeaderboardResponse) {
 		option (google.api.http).get = "/alice/checkers/checkers/leaderboard";
 	}
+// Queries a list of Token items.
+	rpc Token(QueryTokenRequest) returns (QueryTokenResponse) {
+		option (google.api.http).get = "/alice/checkers/checkers/token/{tokens}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -124,4 +129,11 @@ message QueryGetLeaderboardRequest {}
 message QueryGetLeaderboardResponse {
 	Leaderboard Leaderboard = 1 [(gogoproto.nullable) = false];
 }
+message QueryTokenRequest {
+  string tokens = 1;
+}
+
+message QueryTokenResponse {
+}
+
 // this line is used by starport scaffolding # 3
