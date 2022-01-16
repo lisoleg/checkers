@@ -429,6 +429,7 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		tokenModule,
+		coinswap.NewAppModule(appCodec, app.CoinswapKeeper, app.AccountKeeper, app.BankKeeper),
 		checkersModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
