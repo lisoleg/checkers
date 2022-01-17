@@ -14,7 +14,7 @@
 
 <style>
 body {
-  margin: 0;
+  margin: 1px;
 }
 </style>
 
@@ -38,7 +38,15 @@ export default {
     },
   },
   async created() {
-    await this.$store.dispatch('common/env/init')
+    await this.$store.dispatch('common/env/init', {
+      apiNode: 'http://localhost:1317',
+      rpcNode: 'http://localhost:26657',
+      wsNode: 'ws://localhost:26657/websocket',
+      chainId: 'my-chain',
+      addrPrefix: 'cosmos',
+      sdkVersion: 'Stargate',
+      getTXApi: 'http://localhost:26657/tx?hash=0x'
+    })
     this.initialized = true
   },
   errorCaptured(err) {

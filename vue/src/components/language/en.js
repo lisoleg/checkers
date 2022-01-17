@@ -6,7 +6,7 @@ module.exports = {
     },
     //菜单
     menus: {
-      metab: "@Metab",
+      metab: "Metab",
       about: "About",
       sendtokens:"Send tokens",
       document:"Document",

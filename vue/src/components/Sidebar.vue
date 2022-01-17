@@ -6,9 +6,9 @@
       <SpLinkIcon link="/relayers" text="区块浏览器" icon="Transactions" />
     </template>
     <template v-slot:footer>
-      <h4>{{$t('menus.metab')}}</h4>
-      <SpButton type="primary" @click="changeLanguage('ch')">中   文</SpButton><br/>
+      <SpButton type="primary" @click="changeLanguage('ch')">中   文</SpButton>
       <SpButton type="primary" @click="changeLanguage('en')">English</SpButton>
+       <h3>@{{$t('menus.metab')}}</h3>
     </template>
   </SpSidebar>
 </template>
