@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <!-- this line is used by starport scaffolding # 4 -->
+      <SpWelcome />
     </div>
   </div>
 </template>

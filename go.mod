@@ -21,7 +21,6 @@ require (
 
 require (
 	github.com/golang/protobuf v1.5.2
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.2 // indirect
 	github.com/irisnet/irismod v1.5.0
 	github.com/regen-network/cosmos-proto v0.3.1
 	github.com/spf13/pflag v1.0.5

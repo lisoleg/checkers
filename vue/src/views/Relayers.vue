@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="container">
-      <SpRelayers />
+      <SpLatestBlocks />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Relayers',
+  name: 'AccountList',
 }
 </script>

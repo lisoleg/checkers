@@ -1,22 +1,21 @@
 <template>
   <SpSidebar v-on:sidebar-open="sidebarOpen = true" v-on:sidebar-close="sidebarOpen = false">
     <template v-slot:default>
-      <SpLinkIcon link="/" text="Dashboard" icon="Dashboard" />
-      <SpLinkIcon link="/types" text="Custom Type" icon="Form" />
-      <SpLinkIcon link="/relayers" text="Relayers" icon="Transactions" />
-      <div class="sp-dash"></div>
-      <SpLinkIcon href="https://github.com/tendermint/starport" target="_blank" text="Documentation" icon="Docs" />
+      <SpLinkIcon link="/" text="控制面板" icon="Dashboard" />
+      <SpLinkIcon link="/types" text="文档" icon="Form" />
+      <SpLinkIcon link="/relayers" text="区块浏览器" icon="Transactions" />
     </template>
     <template v-slot:footer>
-      <SpStatusAPI :showText="sidebarOpen" />
-      <SpStatusRPC :showText="sidebarOpen" />
-      <SpStatusWS :showText="sidebarOpen" />
-      <div class="sp-text">Build: v0.3.8</div>
+      <h4>{{$t('menus.metab')}}</h4>
+      <SpButton type="primary" @click="changeLanguage('ch')">中   文</SpButton><br/>
+      <SpButton type="primary" @click="changeLanguage('en')">English</SpButton>
     </template>
   </SpSidebar>
 </template>
 
 <script>
+import { getCurrentInstance } from "vue";
+import { useI18n } from 'vue-i18n'//要在js中使用国际化
 export default {
   name: 'Sidebar',
   data() {
@@ -28,6 +27,15 @@ export default {
     hasWallet() {
       return this.$store.hasModule(['common', 'wallet'])
     },
+  },
+
+  setup() {
+    const { proxy } = getCurrentInstance();
+    function changeLanguage(type) {
+      proxy.$i18n.locale = type;
+    }
+    const { t } = useI18n();
+    return { changeLanguage };
   },
 }
 </script>
