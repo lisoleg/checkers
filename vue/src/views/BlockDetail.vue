@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="container">
-      <SpWelcome />
+      <SpBlockHeight />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Types',
+  name: 'Block Detail',
 }
 </script>

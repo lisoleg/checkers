@@ -2,7 +2,6 @@
   <SpSidebar v-on:sidebar-open="sidebarOpen = true" v-on:sidebar-close="sidebarOpen = false">
     <template v-slot:default>
       <SpLinkIcon link="/" text="控制面板" icon="Dashboard" />
-      <SpLinkIcon link="/types" text="文档" icon="Form" />
       <SpLinkIcon link="/relayers" text="区块浏览器" icon="Transactions" />
     </template>
     <template v-slot:footer>
